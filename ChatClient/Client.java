@@ -61,13 +61,14 @@ public class Client extends JPanel implements KeyListener {
 		//setup the box where the text from the chat goes
 		chatText = new JTextArea("");
 		chatText.setEditable(false);	
-		chatText.setFont(new Font("Courier New", Font.PLAIN, 25));
-		
+		chatText.setFont(new Font("Courier New", Font.PLAIN, 18));
+		chatText.setLineWrap(true);
+		chatText.setWrapStyleWord(true);
 		//setup a scrollpane for the chat text, meaning you can now scroll the window when the text goes too far
 		//down or off the side
 		JScrollPane scroll = new JScrollPane(chatText,
 				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-				JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scroll.setBounds(10, 0, frame.getWidth()-30, frame.getHeight()-120);
 		scroll.setAutoscrolls(true);
 		scroll.setEnabled(true);
@@ -84,6 +85,11 @@ public class Client extends JPanel implements KeyListener {
 		frame.add(scroll);
 		frame.add(chatBox);
 		
+		//change properties of the window, specifically the name of the window, whether it's resizable,
+		//what the program does when the window is closed, and whether or not it's visible
+		
+		frame.setTitle("Charles Chatroom");
+		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 		msgHandler(ip, port);
@@ -130,18 +136,18 @@ public class Client extends JPanel implements KeyListener {
 	}
 	@Override
 	public void keyPressed(KeyEvent e) {
-		//when the enter key is pressed, send the current text in the typing box to the output,
-		//as well as appending the current text in the chat to include the user's message
-		if(e.getKeyCode() == KeyEvent.VK_ENTER) {
-			out.println(chatBox.getText());
-			chatText.append("[YOU]: " + chatBox.getText() + "\n");
-			chatBox.setText("");
-		}
+		
 	}
 	@Override
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
+		//when the enter key is pressed, send the current text in the typing box to the output,
+				//as well as appending the current text in the chat to include the user's message
+				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+					if(chatBox.getText() != "") {
+						out.println(chatBox.getText());
+						chatBox.setText("");
+					}
+				}
 	}
 	
 	
