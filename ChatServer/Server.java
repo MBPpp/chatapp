@@ -4,7 +4,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.Scanner;
 
 public class Server {
-	public static final int port = 12345;
+	public static final int port = 12346;
 	public static CopyOnWriteArrayList<ClientHandler> clients = new CopyOnWriteArrayList<>();
 
 	public static void main(String[] args) {
@@ -79,11 +79,32 @@ public class Server {
 				Server.Broadcast(username + " connected, be nice.", this);
 				
 				String inputLine;
+				String mood = "";
 				
 				//read the user input, and send the message if it isn't empty
 				while((inputLine = in.readLine()) != null) {
+					switch(inputLine) {
+					case "/list":
+						this.sendMessage("List of users:");
+						for(ClientHandler client : clients) {
+							this.sendMessage("- " + client.username);
+						}
+						break;
+					case "/mood":
+						this.sendMessage("Type your mood");
+						mood = ("(" + in.readLine() + ")");
+					default:
+						System.out.println(inputLine);
+						System.out.println(mood + "[" + username + "]: " + inputLine);
+						Server.Broadcast(mood + "[" + username + "]: " + inputLine, this);
+					}
+					
+					/*if(inputLine.equals("amongus")) {
+						System.out.println("among us!?");
+					}
+					System.out.println(inputLine);
 					System.out.println("[" + username + "]: " + inputLine);
-					Server.Broadcast("[" + username + "]: " + inputLine, this);
+					Server.Broadcast("[" + username + "]: " + inputLine, this);*/
 				}
 				
 				
