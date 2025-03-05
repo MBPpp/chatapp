@@ -39,9 +39,7 @@ public class Server {
 	public static void Broadcast(String message, ClientHandler sender) {
 		//run through every connected client, send a message as long as it's not the sender
 		for(ClientHandler client : clients) {
-			if(client != sender) {
-				client.sendMessage(message);
-			}
+			client.sendMessage(message);
 		}
 	}
 	private static class ClientHandler implements Runnable {
@@ -92,19 +90,15 @@ public class Server {
 						break;
 					case "/mood":
 						this.sendMessage("Type your mood");
-						mood = ("(" + in.readLine() + ")");
+						mood = ("(" + in.readLine() + ") ");
+						inputLine = "";
+						break;
 					default:
-						System.out.println(inputLine);
-						System.out.println(mood + "[" + username + "]: " + inputLine);
-						Server.Broadcast(mood + "[" + username + "]: " + inputLine, this);
+						if(!inputLine.equals("") || !inputLine.equals(null)) {
+							System.out.println(mood + "[" + username + "]: " + inputLine);
+							Server.Broadcast(mood + "[" + username + "]: " + inputLine, this);
+						}
 					}
-					
-					/*if(inputLine.equals("amongus")) {
-						System.out.println("among us!?");
-					}
-					System.out.println(inputLine);
-					System.out.println("[" + username + "]: " + inputLine);
-					Server.Broadcast("[" + username + "]: " + inputLine, this);*/
 				}
 				
 				
