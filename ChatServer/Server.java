@@ -94,7 +94,7 @@ public class Server {
 						inputLine = "";
 						break;
 					default:
-						if(!inputLine.equals("") || !inputLine.equals(null)) {
+						if(!inputLine.equals("") && !inputLine.equals(null)) {
 							System.out.println(mood + "[" + username + "]: " + inputLine);
 							Server.Broadcast(mood + "[" + username + "]: " + inputLine, this);
 						}
