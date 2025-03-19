@@ -1,6 +1,10 @@
-import java.io.*;
-import java.net.*;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.Scanner;
 
 public class Server {
@@ -10,7 +14,7 @@ public class Server {
 	public static void main(String[] args) {
 		try{
 			ServerSocket serverSocket = new ServerSocket(port);
-			System.out.println("running, get someone in 'ere rn");
+			System.out.println("Server started");
 			
 			//thread to handle server admin input
 			new Thread(() -> {
@@ -37,7 +41,7 @@ public class Server {
 	}
 	
 	public static void Broadcast(String message, ClientHandler sender) {
-		//run through every connected client, send a message as long as it's not the sender
+		//run through every connected client, send a message
 		for(ClientHandler client : clients) {
 			client.sendMessage(message);
 		}
@@ -93,6 +97,9 @@ public class Server {
 						mood = ("(" + in.readLine() + ") ");
 						inputLine = "";
 						break;
+					case "/return2":
+						this.sendMessage("" + Return2());
+						break;
 					default:
 						if(!inputLine.equals("") && !inputLine.equals(null)) {
 							System.out.println(mood + "[" + username + "]: " + inputLine);
@@ -104,7 +111,7 @@ public class Server {
 				
 			} catch(IOException e) {
 				e.printStackTrace();
-				//remove whomstsoever left and let the admin console know they left
+				//remove whomstsoever left and let everyone know they left
 				Server.clients.remove(this);
 				System.out.println(username + " disconnected.");
 				Server.Broadcast(username + " has disconnected. Bye-bye!", this);
@@ -119,9 +126,13 @@ public class Server {
 				}
 			}
 		}
+		
 		public void sendMessage(String message) {
 			//send message, crazy how that works
 			out.println(message);
 		}
-	}
+		private int Return2() {
+			return 2;
+		}
+	}	
 }
